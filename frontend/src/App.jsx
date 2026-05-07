@@ -2,7 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./index.css";
 
-const API_BASE_URL = "http://localhost:3001/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3001/api";
 
 function App() {
   const [chats, setChats] = useState([

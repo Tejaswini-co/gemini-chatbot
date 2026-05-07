@@ -93,6 +93,12 @@ cd ../frontend
 npm install
 ```
 
+Create an optional frontend `.env` file when your backend URL is different from local development:
+
+```env
+VITE_API_BASE_URL=http://localhost:3001/api
+```
+
 ### 5. Run the app
 
 Start the backend:
@@ -128,7 +134,7 @@ http://localhost:5173
 - Deploy the backend to a Node-compatible host such as Render, Railway, Fly.io, or a VPS.
 - Deploy the frontend to Vercel, Netlify, or any static hosting provider.
 - Update `CLIENT_ORIGIN` in the backend to match the deployed frontend URL.
-- Update `API_BASE_URL` in `frontend/src/App.jsx` if the backend URL changes.
+- Set `VITE_API_BASE_URL` in the frontend host to your deployed backend API URL, for example `https://your-backend.onrender.com/api`.
 
 ## Security Notes
 
