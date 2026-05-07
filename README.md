@@ -30,10 +30,6 @@ A full-stack AI chatbot for chatting with documents and images. The app uses Gem
 
 ![Laptop dashboard](docs/screenshots/dashboard-laptop.png)
 
-### Wide Dashboard
-
-![Wide dashboard](docs/screenshots/dashboard-desktop.png)
-
 ## Project Structure
 
 ```text
