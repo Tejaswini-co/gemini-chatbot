@@ -8,27 +8,31 @@ A full-stack AI chatbot for chatting with documents and images. The app uses Gem
 
 - Chat with uploaded PDF and TXT documents
 - Upload images for visual context
-- AI provider fallback flow with live status indicators
+- Vercel API routes for backend deployment
+- AI fallback flow using Gemini, Groq, and Hugging Face
 - Loading states for `Thinking...`, `Processing document...`, and `Using fallback AI...`
 - Dark mode with saved preference
 - Copy button for assistant replies
 - Multi-chat sidebar with document and image context per chat
-- Clear backend errors for invalid keys, empty PDFs, or unavailable providers
 
 ## Tech Stack
 
 | Layer | Technology |
 | --- | --- |
 | Frontend | React, Vite, Axios |
-| Backend | Node.js, Express, Multer |
+| Backend | Vercel Serverless Functions, Node.js, Multer |
 | AI APIs | Google Gemini, Groq, Hugging Face |
 | Document parsing | pdf-parse |
-
 
 ## Project Structure
 
 ```text
 .
+├── api
+│   └── chat
+│       ├── message.js
+│       └── status
+│           └── [chatId].js
 ├── backend
 │   ├── .env.example
 │   ├── package.json
@@ -46,34 +50,28 @@ A full-stack AI chatbot for chatting with documents and images. The app uses Gem
 ├── docs
 │   └── screenshots
 ├── .gitignore
+├── package.json
+├── vercel.json
 └── README.md
 ```
 
-## Getting Started
+## Local Development
 
-### 1. Clone the repository
+### 1. Clone
 
 ```bash
 git clone https://github.com/Tejaswini-co/gemini-chatbot.git
 cd gemini-chatbot
 ```
 
-### 2. Install backend dependencies
+### 2. Backend setup
 
 ```bash
 cd backend
 npm install
 ```
 
-### 3. Configure environment variables
-
-Create a `.env` file inside `backend`:
-
-```bash
-cp .env.example .env
-```
-
-Add your API keys:
+Create `backend/.env`:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key
@@ -81,37 +79,32 @@ GROQ_API_KEY=your_groq_api_key
 HF_API_KEY=your_hugging_face_api_key
 PORT=3001
 CLIENT_ORIGIN=http://localhost:5173
-
 GEMINI_MODEL=gemini-2.5-flash
 GROQ_MODEL=llama-3.3-70b-versatile
 ```
 
-### 4. Install frontend dependencies
+Start backend:
+
+```bash
+npm start
+```
+
+### 3. Frontend setup
 
 ```bash
 cd ../frontend
 npm install
 ```
 
-Create an optional frontend `.env` file when your backend URL is different from local development:
+For local development with the Express backend, create `frontend/.env`:
 
 ```env
 VITE_API_BASE_URL=http://localhost:3001/api
 ```
 
-### 5. Run the app
-
-Start the backend:
+Start frontend:
 
 ```bash
-cd backend
-npm start
-```
-
-Start the frontend in another terminal:
-
-```bash
-cd frontend
 npm run dev
 ```
 
@@ -121,26 +114,45 @@ Open:
 http://localhost:5173
 ```
 
+## Vercel Deployment
+
+This project can deploy frontend and backend together on Vercel.
+
+Use these settings:
+
+```text
+Root Directory: ./
+Framework Preset: Other
+Build Command: npm run build
+Output Directory: frontend/dist
+Install Command: npm install
+```
+
+Add these Vercel environment variables:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
+GROQ_API_KEY=your_groq_api_key
+HF_API_KEY=your_hugging_face_api_key
+GEMINI_MODEL=gemini-2.5-flash
+GROQ_MODEL=llama-3.3-70b-versatile
+```
+
+The deployed frontend calls the backend with relative `/api` routes, so no Render or separate backend host is required.
+
 ## API Overview
 
 | Method | Endpoint | Description |
 | --- | --- | --- |
 | POST | `/api/chat/message` | Sends a chat message with optional document/image uploads |
-| GET | `/api/chat/status/:chatId` | Returns the current processing status for a chat |
-
-## Deployment Notes
-
-- Do not commit `.env`; keep API keys in your hosting provider's environment variables.
-- Deploy the backend to a Node-compatible host such as Render, Railway, Fly.io, or a VPS.
-- Deploy the frontend to Vercel, Netlify, or any static hosting provider.
-- Update `CLIENT_ORIGIN` in the backend to match the deployed frontend URL.
-- Set `VITE_API_BASE_URL` in the frontend host to your deployed backend API URL, for example `https://your-backend.onrender.com/api`.
+| GET | `/api/chat/status/:chatId` | Returns loading status for the active chat |
 
 ## Security Notes
 
-- `.env`, logs, `node_modules`, and build output are ignored by Git.
-- Rotate any API key that was accidentally exposed in terminal output or screenshots.
-- Uploaded files are processed in memory for the current session.
+- Do not commit `.env` files.
+- Keep API keys in Vercel environment variables.
+- `node_modules`, logs, build output, and `.env` files are ignored by Git.
+- Uploaded files are processed in memory during each request.
 
 ## License
 
