@@ -24,11 +24,6 @@ A full-stack AI chatbot for chatting with documents and images. The app uses Gem
 | AI APIs | Google Gemini, Groq, Hugging Face |
 | Document parsing | pdf-parse |
 
-## Screenshots
-
-### Laptop Dashboard
-
-![Laptop dashboard](docs/screenshots/dashboard-laptop.png)
 
 ## Project Structure
 
